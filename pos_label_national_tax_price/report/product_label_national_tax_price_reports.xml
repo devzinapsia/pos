@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_label_national_tax_price" model="report.paperformat">
+        <field name="name">National Tax Price Label Sheet (7.5 x 4 cm)</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">75</field>
+        <field name="page_width">40</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+    </record>
+
+    <record id="report_product_template_label_national_tax_price" model="ir.actions.report">
+        <field name="name">Product Label - National Tax Price (7.5x4 cm)</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">pos_label_national_tax_price.national_tax_price_label</field>
+        <field name="report_file">pos_label_national_tax_price.national_tax_price_label</field>
+        <field name="paperformat_id" ref="pos_label_national_tax_price.paperformat_label_national_tax_price"/>
+        <field name="print_report_name">'Products Labels - %s' % (object.name)</field>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

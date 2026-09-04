@@ -1,0 +1,1 @@
+from . import product_label_national_tax_price_report
