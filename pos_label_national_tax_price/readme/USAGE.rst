@@ -8,4 +8,6 @@ printer, and shows, per label:
 * Product name and barcode.
 * "Importe sin impuestos nacionales" and the price with national taxes
   (VAT and national indirect taxes) excluded.
-* The final price, tax included.
+* The final price, as resolved by the wizard's pricelist (see
+  ``readme/DESCRIPTION.rst`` for an important note about this not being
+  verified as tax-included).
