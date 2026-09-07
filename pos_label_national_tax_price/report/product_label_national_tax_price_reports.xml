@@ -2,10 +2,10 @@
 <odoo>
 
     <record id="paperformat_label_national_tax_price" model="report.paperformat">
-        <field name="name">National Tax Price Label Sheet (7.5 x 4 cm)</field>
+        <field name="name">National Tax Price Label Sheet (7.2 x 4 cm)</field>
         <field name="default" eval="True"/>
         <field name="format">custom</field>
-        <field name="page_height">75</field>
+        <field name="page_height">72</field>
         <field name="page_width">40</field>
         <field name="orientation">Landscape</field>
         <field name="margin_top">0</field>
@@ -17,7 +17,7 @@
     </record>
 
     <record id="report_product_template_label_national_tax_price" model="ir.actions.report">
-        <field name="name">Product Label - National Tax Price (7.5x4 cm)</field>
+        <field name="name">Product Label - National Tax Price (7.2x4 cm)</field>
         <field name="model">product.template</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">pos_label_national_tax_price.national_tax_price_label</field>

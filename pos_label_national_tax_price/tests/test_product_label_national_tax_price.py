@@ -98,5 +98,9 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
         # `data` (which turns the int keys built by the wizard into strings)
         # before it reaches the report values method.
         data["quantity_by_product"] = {str(k): v for k, v in data["quantity_by_product"].items()}
-        html, _report_type = self.env["ir.actions.report"]._render_qweb_html(xml_id, [self.product.id], data=data)
+        html, _report_type = (
+            self.env["ir.actions.report"]
+            .with_context(lang="en_US")
+            ._render_qweb_html(xml_id, [self.product.id], data=data)
+        )
         self.assertIn(b"Amount without national taxes", html)

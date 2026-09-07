@@ -1,4 +1,4 @@
-This module adds a new product label format, **National tax price (7.5 x 4
+This module adds a new product label format, **National tax price (7.2 x 4
 cm)**, to the standard "Print Labels" wizard (Products > select products >
 Print Labels).
 

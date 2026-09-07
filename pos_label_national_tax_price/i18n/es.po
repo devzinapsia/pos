@@ -17,13 +17,13 @@ msgstr ""
 
 #. module: pos_label_national_tax_price
 #: model:ir.model.fields.selection,name:pos_label_national_tax_price.selection__product_label_layout__print_format__national_tax_price
-msgid "National tax price (7.5 x 4 cm)"
-msgstr "Precio sin impuestos nacionales (7,5 x 4 cm)"
+msgid "National tax price (7.2 x 4 cm)"
+msgstr "Precio sin impuestos nacionales (7,2 x 4 cm)"
 
 #. module: pos_label_national_tax_price
 #: model:ir.actions.report,name:pos_label_national_tax_price.report_product_template_label_national_tax_price
-msgid "Product Label - National Tax Price (7.5x4 cm)"
-msgstr "Etiqueta de producto - Precio sin impuestos nacionales (7,5x4 cm)"
+msgid "Product Label - National Tax Price (7.2x4 cm)"
+msgstr "Etiqueta de producto - Precio sin impuestos nacionales (7,2x4 cm)"
 
 #. module: pos_label_national_tax_price
 #. odoo-python

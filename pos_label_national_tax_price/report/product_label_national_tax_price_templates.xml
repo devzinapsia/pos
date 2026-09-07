@@ -11,7 +11,7 @@
 
     <template id="report_productlabel_national_tax_price">
         <t t-call="web.html_container">
-            <t t-set="barcode_size" t-value="'width:56mm;height:9mm'"/>
+            <t t-set="barcode_size" t-value="'width:54mm;height:9mm'"/>
             <t t-set="table_style" t-value="'width:100%;height:40mm;'"/>
             <t t-set="padding_page" t-value="'padding: 2mm'"/>
             <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">

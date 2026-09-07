@@ -7,7 +7,7 @@ class ProductLabelLayout(models.TransientModel):
     _inherit = "product.label.layout"
 
     print_format = fields.Selection(
-        selection_add=[("national_tax_price", "National tax price (7.5 x 4 cm)")],
+        selection_add=[("national_tax_price", "National tax price (7.2 x 4 cm)")],
         ondelete={"national_tax_price": "set default"},
     )
 
