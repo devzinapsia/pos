@@ -20,7 +20,8 @@ width of an 80mm roll.
 
 The label prints:
 
-* The product name and barcode, same as the existing Dymo label.
+* The product name, at a larger size than the Dymo label since there's no
+  barcode to make room for.
 * The final price, exactly as resolved by the wizard's pricelist — same
   value, same source, as the existing Dymo label.
 * A new legend, "Importe sin impuestos nacionales", with the price with the
@@ -99,7 +100,7 @@ products, open Actions > Print Labels, and choose the **National tax price
 The generated PDF is sized for a 7.2 x 4 cm label on an 80mm-wide thermal
 printer, and shows, per label:
 
-* Product name and barcode.
+* Product name (no barcode).
 * "Importe sin impuestos nacionales" and the price with national taxes
   (VAT and national indirect taxes) excluded.
 * The final price, as resolved by the wizard's pricelist (see the important

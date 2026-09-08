@@ -10,7 +10,8 @@ width of an 80mm roll.
 
 The label prints:
 
-* The product name and barcode, same as the existing Dymo label.
+* The product name, at a larger size than the Dymo label since there's no
+  barcode to make room for.
 * The final price, exactly as resolved by the wizard's pricelist — same
   value, same source, as the existing Dymo label.
 * A new legend, "Importe sin impuestos nacionales", with the price with the

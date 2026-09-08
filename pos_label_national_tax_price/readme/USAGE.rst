@@ -5,7 +5,7 @@ products, open Actions > Print Labels, and choose the **National tax price
 The generated PDF is sized for a 7.2 x 4 cm label on an 80mm-wide thermal
 printer, and shows, per label:
 
-* Product name and barcode.
+* Product name (no barcode).
 * "Importe sin impuestos nacionales" and the price with national taxes
   (VAT and national indirect taxes) excluded.
 * The final price, as resolved by the wizard's pricelist (see
