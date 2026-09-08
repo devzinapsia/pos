@@ -10,7 +10,20 @@
     </template>
 
     <template id="report_productlabel_national_tax_price">
-        <t t-call="web.html_container">
+        <!-- No nested t-call="web.html_container" here: national_tax_price_label
+             above already wraps this via web.basic_layout. Core Dymo's own
+             template nests it a second time (harmless there, since Dymo's
+             hardcoded 57mm width never tries to reach the true page edge);
+             for us it's redundant and dropped as a cleanup. -->
+        <t>
+            <!-- The report body carries Bootstrap's "container" class AND
+                 Odoo's own "o_body_html" class (11mm side padding, meant for
+                 real A4 print margins - see web/.../report.scss) - without
+                 this reset, right-aligned content (the price) stops well
+                 short of the actual paper edge. -->
+            <style>
+                body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
+            </style>
             <t t-set="barcode_size" t-value="'width:54mm;height:9mm'"/>
             <t t-set="table_style" t-value="'width:100%;height:40mm;'"/>
             <t t-set="padding_page" t-value="'padding: 2mm'"/>
@@ -41,8 +54,14 @@
     </template>
 
     <template id="report_productlabel_national_tax_price_continuous_delete_me">
-        <t t-call="web.html_container">
-            <style>.o_label_sheet { page-break-before: auto !important; }</style>
+        <!-- No nested t-call="web.html_container" here: continuous_delete_me
+             above already wraps this via web.basic_layout. See the comment
+             on report_productlabel_national_tax_price for why. -->
+        <t>
+            <style>
+                .o_label_sheet { page-break-before: auto !important; }
+                body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
+            </style>
             <t t-set="barcode_size" t-value="'width:54mm;height:9mm'"/>
             <t t-set="table_style" t-value="'width:100%;height:40mm;'"/>
             <t t-set="padding_page" t-value="'padding: 2mm; margin-bottom: 4mm;'"/>
@@ -62,11 +81,12 @@
         <t t-set="label_currency" t-value="pricelist.currency_id or product.currency_id"/>
         <t t-set="final_price" t-value="pricelist._get_product_price(product, 1, currency=label_currency)"/>
         <t t-set="price_without_national_taxes" t-value="get_price_without_national_taxes(product, final_price)"/>
-        <!-- Explicit width/height override product/report_label_sheet.scss's
-             hardcoded .o_label_dymo (57x32mm) / .o_label_sheet (210x297mm)
-             sizes, which would otherwise silently cap this label narrower
-             than the page and shift right-aligned content off-page. -->
-        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:40mm;' + padding_page">
+        <!-- Explicit width/height/margin override product/report_label_sheet.scss's
+             hardcoded .o_label_dymo (57x32mm) / .o_label_sheet (210x297mm,
+             margin-left/right: -4mm) sizes, which would otherwise silently
+             cap this label narrower than the page, shift it left, and push
+             right-aligned content off-page. -->
+        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:40mm;margin:0;' + padding_page">
             <div class="o_label_full" t-att-style="table_style">
                 <div class="o_label_name" style="line-height: 100%;background-color: transparent;">
                     <span t-if="product.is_product_variant" t-field="product.display_name"/>
