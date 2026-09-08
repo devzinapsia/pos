@@ -81,7 +81,11 @@
                     <strong class="o_label_price" t-out="final_price"
                             t-options="{'widget': 'monetary', 'display_currency': label_currency, 'label_price': True}"/>
                 </div>
-                <div class="o_label_left_column">
+                <!-- o_label_full_with overrides o_label_left_column's default
+                     width:40% (meant for when the barcode sits beside other
+                     info, like in 4x12) so our wider 54mm barcode isn't
+                     clipped by its overflow:hidden container. -->
+                <div class="o_label_left_column o_label_full_with">
                     <t t-if="barcode">
                         <!-- `quiet=0` to remove the left and right margins on the barcode -->
                         <div t-out="barcode" style="padding:0"
