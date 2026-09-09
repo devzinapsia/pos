@@ -28,8 +28,10 @@
                 .o_label_sheet { page-break-before: auto !important; }
                 body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
             </style>
-            <t t-set="table_style" t-value="'width:100%;height:40mm;'"/>
-            <t t-set="padding_page" t-value="'padding: 2mm; margin-bottom: 4mm;'"/>
+            <!-- Content box height: must match LABEL_CONTENT_HEIGHT_MM in
+                 models/ir_actions_report.py. -->
+            <t t-set="table_style" t-value="'width:100%;height:44mm;'"/>
+            <t t-set="padding_page" t-value="'padding: 2mm'"/>
             <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
                 <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
                 <t t-foreach="barcode_and_qty_by_product[1]" t-as="barcode_and_qty">
@@ -49,8 +51,11 @@
              hardcoded .o_label_dymo (57x32mm) / .o_label_sheet (210x297mm,
              margin-left/right: -4mm) sizes, which would otherwise silently
              cap this label narrower than the page, shift it left, and push
-             right-aligned content off-page. -->
-        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:40mm;margin:0;' + padding_page">
+             right-aligned content off-page. overflow:visible (that same
+             class also sets overflow:hidden) so a longer product name that
+             wraps to 3 lines spills into the cut-guide gap below instead of
+             getting silently cut off. -->
+        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:44mm;margin:0;overflow:visible;' + padding_page">
             <div class="o_label_full" t-att-style="table_style">
                 <!-- No barcode: the client's real label doesn't carry one,
                      and the freed vertical space goes to a bigger product
@@ -62,9 +67,10 @@
                      everything top-aligned, then overlapping once a
                      2-line product name was involved). Table/td valign is
                      the same technique already used elsewhere in Odoo core
-                     for this engine (see product_packaging.xml). -->
-                <table style="width:100%;height:100%;border-collapse:collapse;">
-                    <tr><td style="vertical-align:middle;padding:0;">
+                     for this engine (see product_packaging.xml). No border
+                     of our own is set anywhere here or on the table below. -->
+                <table style="width:100%;height:100%;border-collapse:collapse;border:none;">
+                    <tr><td style="vertical-align:middle;padding:0;border:none;">
                         <div class="o_label_name" style="line-height: 110%;background-color: transparent;font-size: 1.3em;">
                             <span t-if="product.is_product_variant" t-field="product.display_name"/>
                             <span t-else="" t-field="product.name"/>
@@ -82,6 +88,11 @@
                 </table>
             </div>
         </div>
+        <!-- Cut guide: a row of spaced-out dots (not a solid/dashed border,
+             which uses too much ink and doesn't read as a "cut here" line)
+             marking where to tear/cut between labels. Height must match
+             LABEL_CUT_LINE_HEIGHT_MM in models/ir_actions_report.py. -->
+        <div style="width:100%;height:3mm;overflow:hidden;white-space:nowrap;text-align:center;font-size:0.6em;line-height:3mm;">.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.</div>
     </template>
 
 </odoo>

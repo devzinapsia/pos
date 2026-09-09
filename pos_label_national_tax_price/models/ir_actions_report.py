@@ -3,8 +3,12 @@
 from odoo import models
 
 COMANDERA_REPORT_NAME = "pos_label_national_tax_price.comandera_label"
-LABEL_HEIGHT_MM = 40
-LABEL_SPACING_MM = 4
+# Must match the heights baked into report_simple_label_comandera's inline
+# styles (content box + cut-guide line) in
+# product_label_national_tax_price_templates.xml.
+LABEL_CONTENT_HEIGHT_MM = 44
+LABEL_CUT_LINE_HEIGHT_MM = 3
+LABEL_HEIGHT_MM = LABEL_CONTENT_HEIGHT_MM + LABEL_CUT_LINE_HEIGHT_MM
 PAGE_MARGIN_MM = 4
 
 
@@ -21,7 +25,7 @@ class IrActionsReport(models.Model):
     def get_paperformat(self):
         count = self.env.context.get("pos_label_comandera_count")
         if count and self.report_name == COMANDERA_REPORT_NAME:
-            height = count * LABEL_HEIGHT_MM + max(count - 1, 0) * LABEL_SPACING_MM + 2 * PAGE_MARGIN_MM
+            height = count * LABEL_HEIGHT_MM + 2 * PAGE_MARGIN_MM
             return self.env["report.paperformat"].new({
                 "format": "custom",
                 "page_width": 72,
