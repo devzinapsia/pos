@@ -3,12 +3,10 @@
 from odoo import models
 
 COMANDERA_REPORT_NAME = "pos_label_national_tax_price.comandera_label"
-# Must match the heights baked into report_simple_label_comandera's inline
-# styles (content box + cut-guide line) in
+# Must match the label height (o_label_sheet, cut-guide row included) baked
+# into report_simple_label_comandera's inline styles in
 # product_label_national_tax_price_templates.xml.
-LABEL_CONTENT_HEIGHT_MM = 44
-LABEL_CUT_LINE_HEIGHT_MM = 3
-LABEL_HEIGHT_MM = LABEL_CONTENT_HEIGHT_MM + LABEL_CUT_LINE_HEIGHT_MM
+LABEL_HEIGHT_MM = 44
 PAGE_MARGIN_MM = 4
 
 

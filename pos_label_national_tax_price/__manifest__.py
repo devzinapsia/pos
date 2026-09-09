@@ -1,7 +1,7 @@
 {
     "name": "POS Label National Tax Price",
     "summary": "Product label for 80mm thermal printers showing the price without national taxes",
-    "version": "19.0.2.0.3",
+    "version": "19.0.2.0.4",
     "category": "Sales/Point of Sale",
     "license": "AGPL-3",
     "author": "Zinapsia",

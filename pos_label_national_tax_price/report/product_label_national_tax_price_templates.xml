@@ -23,15 +23,26 @@
                  real A4 print margins - see web/.../report.scss), plus
                  .o_label_sheet forces "page-break-before: always" (meant for
                  Dymo, where each label really is its own physical sticker).
-                 None of that applies to a single continuous roll page. -->
+                 None of that applies to a single continuous roll page.
+                 "* { border/outline: none }" is a brute-force reset for a
+                 stray border wkhtmltopdf's old WebKit render engine adds
+                 to a plain <table> in some cases even with border:none set
+                 directly on it - couldn't find an actual source rule for
+                 it in any stylesheet, so this covers it regardless. -->
             <style>
                 .o_label_sheet { page-break-before: auto !important; }
                 body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
+                .o_label_sheet, .o_label_sheet * { border: none !important; outline: none !important; }
             </style>
-            <!-- Content box height: must match LABEL_CONTENT_HEIGHT_MM in
-                 models/ir_actions_report.py. -->
-            <t t-set="table_style" t-value="'width:100%;height:44mm;'"/>
-            <t t-set="padding_page" t-value="'padding: 2mm'"/>
+            <!-- Total per-label height (content + cut-guide row): must match
+                 LABEL_HEIGHT_MM in models/ir_actions_report.py. -->
+            <!-- overflow:visible pisa product/report_label_sheet.scss's
+                 div.o_label_full { overflow: hidden; } for the same reason
+                 as .o_label_sheet below: without it, a 3-line product name
+                 gets cramped/clipped against this box's own edge instead of
+                 spilling past it. -->
+            <t t-set="table_style" t-value="'width:100%;height:44mm;overflow:visible;'"/>
+            <t t-set="padding_page" t-value="'padding: 2mm 2mm 0 2mm'"/>
             <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
                 <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
                 <t t-foreach="barcode_and_qty_by_product[1]" t-as="barcode_and_qty">
@@ -53,29 +64,35 @@
              cap this label narrower than the page, shift it left, and push
              right-aligned content off-page. overflow:visible (that same
              class also sets overflow:hidden) so a longer product name that
-             wraps to 3 lines spills into the cut-guide gap below instead of
-             getting silently cut off. -->
+             wraps to 3 lines spills past its row instead of getting
+             silently cut off. Bottom padding is 0 (see padding_page above)
+             so the cut-guide row below lands exactly at this label's true
+             44mm edge, with nothing printed after it. -->
         <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:44mm;margin:0;overflow:visible;' + padding_page">
             <div class="o_label_full" t-att-style="table_style">
                 <!-- No barcode: the client's real label doesn't carry one,
                      and the freed vertical space goes to a bigger product
                      name instead.
 
-                     Vertically centered via a real table + vertical-align:
-                     middle on its single cell, not flexbox - wkhtmltopdf's
-                     old WebKit doesn't render flex reliably (silently kept
-                     everything top-aligned, then overlapping once a
-                     2-line product name was involved). Table/td valign is
-                     the same technique already used elsewhere in Odoo core
-                     for this engine (see product_packaging.xml). No border
-                     of our own is set anywhere here or on the table below. -->
-                <table style="width:100%;height:100%;border-collapse:collapse;border:none;">
-                    <tr><td style="vertical-align:middle;padding:0;border:none;">
+                     Single-row table centers the product info via
+                     vertical-align:middle - flexbox isn't used because
+                     wkhtmltopdf's old WebKit doesn't render it reliably
+                     (silently kept everything top-aligned, then
+                     overlapping once a 2-line product name was involved).
+                     Sized to 41mm (44mm label - 3mm cut-guide line below),
+                     and the cut-guide line is kept OUT of this table: a
+                     <td> with nowrap text made wkhtmltopdf's old table
+                     layout widen the whole table to fit it on one line,
+                     ignoring overflow:hidden on the line's own div - a
+                     plain sibling div outside the table doesn't have that
+                     quirk. -->
+                <table style="width:100%;height:41mm;border-collapse:collapse;">
+                    <tr><td style="vertical-align:middle;padding:0;">
                         <div class="o_label_name" style="line-height: 110%;background-color: transparent;font-size: 1.3em;">
                             <span t-if="product.is_product_variant" t-field="product.display_name"/>
                             <span t-else="" t-field="product.name"/>
                         </div>
-                        <div class="text-start" style="font-size: 0.7em;padding-top: 1px;">
+                        <div class="text-start" style="font-size: 0.7em;margin-top: 1mm;">
                             <span t-out="national_tax_price_label"/>
                             <span t-out="price_without_national_taxes" style="margin-left: 2px;"
                                   t-options="{'widget': 'monetary', 'display_currency': label_currency}"/>
@@ -86,13 +103,18 @@
                         </div>
                     </td></tr>
                 </table>
+                <!-- Cut guide: a row of spaced-out dots (not a solid/dashed
+                     CSS border, which uses more ink and doesn't read as a
+                     "cut here" line). A CSS repeating-gradient background
+                     was tried first but wkhtmltopdf's old WebKit doesn't
+                     render it; plain text always works. Left-aligned (not
+                     centered) with far more dots than could ever fit,
+                     clipped by overflow:hidden, so it reaches both edges
+                     regardless of label width instead of floating in the
+                     middle with blank margins. -->
+                <div style="width:100%;height:3mm;overflow:hidden;white-space:nowrap;text-align:left;font-size:0.6em;line-height:3mm;">.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.</div>
             </div>
         </div>
-        <!-- Cut guide: a row of spaced-out dots (not a solid/dashed border,
-             which uses too much ink and doesn't read as a "cut here" line)
-             marking where to tear/cut between labels. Height must match
-             LABEL_CUT_LINE_HEIGHT_MM in models/ir_actions_report.py. -->
-        <div style="width:100%;height:3mm;overflow:hidden;white-space:nowrap;text-align:center;font-size:0.6em;line-height:3mm;">.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.&#160;&#160;.</div>
     </template>
 
 </odoo>
