@@ -8,9 +8,9 @@ POS Label National Tax Price
 
 |badge1|
 
-This module adds a new product label format, **Etiqueta para comandera**,
-to the standard "Print Labels" wizard (Products > select products >
-Print Labels).
+This module adds a new product label format, **Etiqueta para comandera con
+precio**, to the standard "Print Labels" wizard (Products > select
+products > Print Labels).
 
 It is intended for 80mm-wide thermal ticket printers ("comandera"). Rather
 than one small PDF page per label (how the standard Dymo label works),
@@ -94,7 +94,7 @@ Usage
 
 From Point of Sale > Products (or Inventory > Products), select one or more
 products, open Actions > Print Labels, and choose the **Etiqueta para
-comandera** format, then click Print.
+comandera con precio** format, then click Print.
 
 The generated PDF is one continuous 7.2cm-wide page holding every
 requested label, one after another, and shows, per label:

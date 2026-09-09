@@ -1,6 +1,6 @@
-This module adds a new product label format, **Etiqueta para comandera**,
-to the standard "Print Labels" wizard (Products > select products >
-Print Labels).
+This module adds a new product label format, **Etiqueta para comandera con
+precio**, to the standard "Print Labels" wizard (Products > select
+products > Print Labels).
 
 It is intended for 80mm-wide thermal ticket printers ("comandera"). Rather
 than one small PDF page per label (how the standard Dymo label works),

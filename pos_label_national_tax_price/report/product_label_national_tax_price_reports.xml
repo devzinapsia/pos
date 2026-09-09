@@ -22,7 +22,7 @@
     </record>
 
     <record id="report_product_template_label_comandera" model="ir.actions.report">
-        <field name="name">Label for comandera (7.2cm wide)</field>
+        <field name="name">Label for comandera with price (7.2cm wide)</field>
         <field name="model">product.template</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">pos_label_national_tax_price.comandera_label</field>

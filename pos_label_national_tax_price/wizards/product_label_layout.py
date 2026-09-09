@@ -7,7 +7,7 @@ class ProductLabelLayout(models.TransientModel):
     _inherit = "product.label.layout"
 
     print_format = fields.Selection(
-        selection_add=[("comandera_label", "Label for comandera")],
+        selection_add=[("comandera_label", "Label for comandera with price")],
         ondelete={"comandera_label": "set default"},
     )
 

@@ -1,6 +1,6 @@
 From Point of Sale > Products (or Inventory > Products), select one or more
 products, open Actions > Print Labels, and choose the **Etiqueta para
-comandera** format, then click Print.
+comandera con precio** format, then click Print.
 
 The generated PDF is one continuous 7.2cm-wide page holding every
 requested label, one after another, and shows, per label:
