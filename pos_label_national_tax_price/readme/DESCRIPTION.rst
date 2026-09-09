@@ -1,12 +1,13 @@
-This module adds a new product label format, **National tax price (7.2 x 4
-cm)**, to the standard "Print Labels" wizard (Products > select products >
+This module adds a new product label format, **Etiqueta para comandera**,
+to the standard "Print Labels" wizard (Products > select products >
 Print Labels).
 
-It is intended for 80mm-wide thermal ticket printers ("comandera"), and is
-derived from the standard Odoo *Dymo* label report because that is the only
-built-in format that already renders a single label per page instead of a
-grid of several labels per sheet, and it already uses the full printable
-width of an 80mm roll.
+It is intended for 80mm-wide thermal ticket printers ("comandera"). Rather
+than one small PDF page per label (how the standard Dymo label works),
+which some thermal printer drivers mishandle when several are printed in
+one job, this format prints every requested label stacked on a single
+continuous page, 7.2cm wide and as tall as needed for however many labels
+are being printed.
 
 The label prints:
 
@@ -28,13 +29,11 @@ restricted to a single company).
 
 .. important::
    This label is generated as a PDF and printed through the browser's print
-   dialog, exactly like the existing Dymo label — it does not go through an
-   IoT Box or send ESC/POS commands. Because of that, **Odoo has no way to
-   trigger an automatic cut after each label**: whether the printer cuts
-   between labels depends entirely on the thermal printer's own driver or
-   on-device configuration (many label printers with a built-in cutter have
-   an "auto-cut" or "cut after each page" setting independent of the
-   application sending the print job). See ``readme/CONFIGURE.rst``.
+   dialog — it does not go through an IoT Box or send ESC/POS commands.
+   Because of that, **Odoo has no way to trigger an automatic cut after
+   each label**: whether the printer cuts at all depends entirely on the
+   thermal printer's own driver or on-device configuration. See
+   ``readme/CONFIGURE.rst``.
 
 .. important::
    **This label does not verify that the price it prints is actually tax

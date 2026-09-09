@@ -1,74 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="paperformat_label_national_tax_price" model="report.paperformat">
-        <field name="name">National Tax Price Label Sheet (7.2 x 4 cm)</field>
+    <!-- Single continuous PORTRAIT page (72mm wide, tall enough for however
+         many labels are being printed) instead of one page per label: this
+         printer's driver mishandles a PDF with several small pages, but
+         handles one bigger page fine (see models/ir_actions_report.py for
+         the per-print-job page height calculation). -->
+    <record id="paperformat_comandera_label" model="report.paperformat">
+        <field name="name">Comandera Label Sheet (7.2cm wide)</field>
         <field name="default" eval="True"/>
-        <field name="format">custom</field>
-        <field name="page_height">72</field>
-        <field name="page_width">40</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">0</field>
-        <field name="margin_bottom">0</field>
-        <field name="margin_left">0</field>
-        <field name="margin_right">0</field>
-        <field name="disable_shrinking" eval="True"/>
-        <field name="dpi">96</field>
-    </record>
-
-    <record id="report_product_template_label_national_tax_price" model="ir.actions.report">
-        <field name="name">Product Label - National Tax Price (7.2x4 cm)</field>
-        <field name="model">product.template</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">pos_label_national_tax_price.national_tax_price_label</field>
-        <field name="report_file">pos_label_national_tax_price.national_tax_price_label</field>
-        <field name="paperformat_id" ref="pos_label_national_tax_price.paperformat_label_national_tax_price"/>
-        <field name="print_report_name">'Products Labels - %s' % (object.name)</field>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- TEMPORARY diagnostic format, not for production use. Reuses the same
-         template/AbstractModel as the real report above, only the page size
-         differs (6 x 3 cm instead of 7.2 x 4 cm), to isolate whether the
-         SAM4S print issue is about page size or about multi-page handling.
-         Delete this record, the paperformat below, and the matching
-         selection_add in wizards/product_label_layout.py once the
-         diagnostic is done. -->
-    <record id="paperformat_test_tiny_label_delete_me" model="report.paperformat">
-        <field name="name">TEST DELETE ME - Tiny Label Sheet (6 x 3 cm)</field>
-        <field name="format">custom</field>
-        <field name="page_height">60</field>
-        <field name="page_width">30</field>
-        <field name="orientation">Landscape</field>
-        <field name="margin_top">0</field>
-        <field name="margin_bottom">0</field>
-        <field name="margin_left">0</field>
-        <field name="margin_right">0</field>
-        <field name="disable_shrinking" eval="True"/>
-        <field name="dpi">96</field>
-    </record>
-
-    <record id="report_product_template_label_test_tiny_delete_me" model="ir.actions.report">
-        <field name="name">TEST DELETE ME - Tiny Label (6x3 cm)</field>
-        <field name="model">product.template</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">pos_label_national_tax_price.national_tax_price_label</field>
-        <field name="report_file">pos_label_national_tax_price.national_tax_price_label</field>
-        <field name="paperformat_id" ref="pos_label_national_tax_price.paperformat_test_tiny_label_delete_me"/>
-        <field name="print_report_name">'Products Labels TEST - %s' % (object.name)</field>
-        <field name="binding_type">report</field>
-    </record>
-
-    <!-- TEMPORARY diagnostic format, not for production use. Reuses the same
-         template/AbstractModel as the real report above. Unlike it, this one
-         is a single continuous PORTRAIT page (72mm wide, 3 meters tall)
-         instead of one small page per label, so every label lands on the
-         same page and the SAM4S continuous roll driver never has to handle
-         a multi-page PDF. Delete this record, the paperformat below, and
-         the matching selection_add in wizards/product_label_layout.py once
-         the diagnostic is done. -->
-    <record id="paperformat_test_continuous_delete_me" model="report.paperformat">
-        <field name="name">TEST DELETE ME - Continuous Roll Sheet (7.2cm wide)</field>
         <field name="format">custom</field>
         <field name="page_width">72</field>
         <field name="page_height">3000</field>
@@ -81,14 +21,14 @@
         <field name="dpi">96</field>
     </record>
 
-    <record id="report_product_template_label_test_continuous_delete_me" model="ir.actions.report">
-        <field name="name">TEST DELETE ME - Continuous Roll Label</field>
+    <record id="report_product_template_label_comandera" model="ir.actions.report">
+        <field name="name">Label for comandera (7.2cm wide)</field>
         <field name="model">product.template</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">pos_label_national_tax_price.continuous_delete_me</field>
-        <field name="report_file">pos_label_national_tax_price.continuous_delete_me</field>
-        <field name="paperformat_id" ref="pos_label_national_tax_price.paperformat_test_continuous_delete_me"/>
-        <field name="print_report_name">'Products Labels TEST CONT - %s' % (object.name)</field>
+        <field name="report_name">pos_label_national_tax_price.comandera_label</field>
+        <field name="report_file">pos_label_national_tax_price.comandera_label</field>
+        <field name="paperformat_id" ref="pos_label_national_tax_price.paperformat_comandera_label"/>
+        <field name="print_report_name">'Products Labels - %s' % (object.name)</field>
         <field name="binding_type">report</field>
     </record>
 

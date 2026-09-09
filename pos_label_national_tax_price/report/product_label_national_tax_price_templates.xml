@@ -1,62 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="national_tax_price_label">
+    <template id="comandera_label">
         <t t-call="web.basic_layout">
             <div class="page">
-                <t t-call="pos_label_national_tax_price.report_productlabel_national_tax_price"/>
+                <t t-call="pos_label_national_tax_price.report_productlabel_comandera"/>
             </div>
         </t>
     </template>
 
-    <template id="report_productlabel_national_tax_price">
-        <!-- No nested t-call="web.html_container" here: national_tax_price_label
+    <template id="report_productlabel_comandera">
+        <!-- No nested t-call="web.html_container" here: comandera_label
              above already wraps this via web.basic_layout. Core Dymo's own
              template nests it a second time (harmless there, since Dymo's
              hardcoded 57mm width never tries to reach the true page edge);
-             for us it's redundant and dropped as a cleanup. -->
+             for us it's redundant and was making wkhtmltopdf's old WebKit
+             render a second, nested <html><body> that didn't collapse
+             cleanly. -->
         <t>
             <!-- The report body carries Bootstrap's "container" class AND
                  Odoo's own "o_body_html" class (11mm side padding, meant for
-                 real A4 print margins - see web/.../report.scss) - without
-                 this reset, right-aligned content (the price) stops well
-                 short of the actual paper edge. -->
-            <style>
-                body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
-            </style>
-            <t t-set="table_style" t-value="'width:100%;height:40mm;'"/>
-            <t t-set="padding_page" t-value="'padding: 2mm'"/>
-            <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
-                <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
-                <t t-foreach="barcode_and_qty_by_product[1]" t-as="barcode_and_qty">
-                    <t t-set="barcode" t-value="barcode_and_qty[0]"/>
-                    <t t-foreach="range(barcode_and_qty[1])" t-as="qty">
-                        <t t-call="pos_label_national_tax_price.report_simple_label_national_tax_price"/>
-                    </t>
-                </t>
-            </t>
-        </t>
-    </template>
-
-    <!-- TEMPORARY diagnostic templates, not for production use. Same content
-         as the templates above, but override the "page-break-before: always"
-         that product/static/src/scss/report_label_sheet.scss puts on every
-         .o_label_sheet, so all labels flow onto the single continuous page
-         declared by paperformat_test_continuous_delete_me instead of one
-         page per label. Delete once the SAM4S print diagnostic is done. -->
-    <template id="continuous_delete_me">
-        <t t-call="web.basic_layout">
-            <div class="page">
-                <t t-call="pos_label_national_tax_price.report_productlabel_national_tax_price_continuous_delete_me"/>
-            </div>
-        </t>
-    </template>
-
-    <template id="report_productlabel_national_tax_price_continuous_delete_me">
-        <!-- No nested t-call="web.html_container" here: continuous_delete_me
-             above already wraps this via web.basic_layout. See the comment
-             on report_productlabel_national_tax_price for why. -->
-        <t>
+                 real A4 print margins - see web/.../report.scss), plus
+                 .o_label_sheet forces "page-break-before: always" (meant for
+                 Dymo, where each label really is its own physical sticker).
+                 None of that applies to a single continuous roll page. -->
             <style>
                 .o_label_sheet { page-break-before: auto !important; }
                 body.container, body.o_body_html { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; margin: 0 !important; }
@@ -66,16 +33,15 @@
             <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
                 <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
                 <t t-foreach="barcode_and_qty_by_product[1]" t-as="barcode_and_qty">
-                    <t t-set="barcode" t-value="barcode_and_qty[0]"/>
                     <t t-foreach="range(barcode_and_qty[1])" t-as="qty">
-                        <t t-call="pos_label_national_tax_price.report_simple_label_national_tax_price"/>
+                        <t t-call="pos_label_national_tax_price.report_simple_label_comandera"/>
                     </t>
                 </t>
             </t>
         </t>
     </template>
 
-    <template id="report_simple_label_national_tax_price">
+    <template id="report_simple_label_comandera">
         <t t-set="label_currency" t-value="pricelist.currency_id or product.currency_id"/>
         <t t-set="final_price" t-value="pricelist._get_product_price(product, 1, currency=label_currency)"/>
         <t t-set="price_without_national_taxes" t-value="get_price_without_national_taxes(product, final_price)"/>

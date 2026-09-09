@@ -4,9 +4,9 @@ from odoo import _, models
 from odoo.addons.product.report.product_label_report import _prepare_data
 
 
-class ReportProductLabelNationalTaxPrice(models.AbstractModel):
-    _name = "report.pos_label_national_tax_price.national_tax_price_label"
-    _description = "Product Label Report - National Tax Price"
+class ReportProductLabelComandera(models.AbstractModel):
+    _name = "report.pos_label_national_tax_price.comandera_label"
+    _description = "Product Label Report - Comandera"
 
     def _get_report_values(self, docids, data):
         # Reuse the same product/quantity/pricelist resolution the core Dymo
@@ -42,12 +42,3 @@ class ReportProductLabelNationalTaxPrice(models.AbstractModel):
     @staticmethod
     def _is_national_tax(AccountMove, tax_group):
         return AccountMove._l10n_ar_is_tax_group_vat(tax_group) or AccountMove._l10n_ar_is_tax_group_other_national_ind_tax(tax_group)
-
-
-# TEMPORARY diagnostic model, not for production use. Reuses the parent
-# class's logic as-is, only under the "_name" that the continuous-roll test
-# template (national_tax_price_label_continuous_delete_me) expects. Delete
-# once the SAM4S print diagnostic is done.
-class ReportProductLabelNationalTaxPriceContinuousDeleteMe(ReportProductLabelNationalTaxPrice):
-    _name = "report.pos_label_national_tax_price.continuous_delete_me"
-    _description = "TEST DELETE ME - Product Label Report - Continuous Roll"

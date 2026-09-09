@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-09-03 00:00+0000\n"
+"PO-Revision-Date: 2026-09-09 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -16,14 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: pos_label_national_tax_price
-#: model:ir.model.fields.selection,name:pos_label_national_tax_price.selection__product_label_layout__print_format__national_tax_price
-msgid "National tax price (7.2 x 4 cm)"
-msgstr "Precio sin impuestos nacionales (7,2 x 4 cm)"
+#: model:ir.model.fields.selection,name:pos_label_national_tax_price.selection__product_label_layout__print_format__comandera_label
+msgid "Label for comandera"
+msgstr "Etiqueta para comandera"
 
 #. module: pos_label_national_tax_price
-#: model:ir.actions.report,name:pos_label_national_tax_price.report_product_template_label_national_tax_price
-msgid "Product Label - National Tax Price (7.2x4 cm)"
-msgstr "Etiqueta de producto - Precio sin impuestos nacionales (7,2x4 cm)"
+#: model:ir.actions.report,name:pos_label_national_tax_price.report_product_template_label_comandera
+msgid "Label for comandera (7.2cm wide)"
+msgstr "Etiqueta para comandera (7,2cm de ancho)"
 
 #. module: pos_label_national_tax_price
 #. odoo-python

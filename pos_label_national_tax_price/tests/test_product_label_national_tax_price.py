@@ -45,9 +45,8 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
                 "taxes_id": [(6, 0, (cls.vat_tax + cls.iibb_tax).ids)],
             }
         )
-        cls.report_model = cls.env[
-            "report.pos_label_national_tax_price.national_tax_price_label"
-        ]
+        cls.report_model = cls.env["report.pos_label_national_tax_price.comandera_label"]
+        cls.report_action = cls.env.ref("pos_label_national_tax_price.report_product_template_label_comandera")
 
     def test_price_without_national_taxes_excludes_only_national_taxes(self):
         """Only the VAT (a national tax) is excluded; the provincial IIBB
@@ -70,10 +69,10 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
         price = self.report_model._get_price_without_national_taxes(product_no_tax, product_no_tax.list_price)
         self.assertEqual(price, product_no_tax.list_price)
 
-    def test_wizard_routes_to_national_tax_price_report(self):
+    def test_wizard_routes_to_comandera_report(self):
         wizard = self.env["product.label.layout"].create(
             {
-                "print_format": "national_tax_price",
+                "print_format": "comandera_label",
                 "product_ids": [(6, 0, self.product.ids)],
                 "custom_quantity": 1,
             }
@@ -81,14 +80,14 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
         xml_id, data = wizard._prepare_report_data()
         self.assertEqual(
             xml_id,
-            "pos_label_national_tax_price.report_product_template_label_national_tax_price",
+            "pos_label_national_tax_price.report_product_template_label_comandera",
         )
         self.assertEqual(data["quantity_by_product"], {self.product.id: 1})
 
     def test_report_renders_without_error(self):
         wizard = self.env["product.label.layout"].create(
             {
-                "print_format": "national_tax_price",
+                "print_format": "comandera_label",
                 "product_ids": [(6, 0, self.product.ids)],
                 "custom_quantity": 1,
             }
@@ -104,3 +103,17 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
             ._render_qweb_html(xml_id, [self.product.id], data=data)
         )
         self.assertIn(b"Amount without national taxes", html)
+
+    def test_paperformat_height_scales_with_label_count(self):
+        """The continuous-roll page height must be computed from the actual
+        number of labels being printed in that job (label height x count,
+        plus spacing between labels and a small page margin), not a fixed
+        value - regression test for a bug where printing a single label
+        used a leftover, much taller page.
+        """
+        paperformat_one = self.report_action.with_context(pos_label_comandera_count=1).get_paperformat()
+        self.assertEqual(paperformat_one.page_width, 72)
+        self.assertEqual(paperformat_one.page_height, 48)  # 1*40 + 0*4 spacing + 2*4 margin
+
+        paperformat_three = self.report_action.with_context(pos_label_comandera_count=3).get_paperformat()
+        self.assertEqual(paperformat_three.page_height, 136)  # 3*40 + 2*4 spacing + 2*4 margin

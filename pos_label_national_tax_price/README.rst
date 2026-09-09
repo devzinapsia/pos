@@ -8,15 +8,16 @@ POS Label National Tax Price
 
 |badge1|
 
-This module adds a new product label format, **National tax price (7.2 x 4
-cm)**, to the standard "Print Labels" wizard (Products > select products >
+This module adds a new product label format, **Etiqueta para comandera**,
+to the standard "Print Labels" wizard (Products > select products >
 Print Labels).
 
-It is intended for 80mm-wide thermal ticket printers ("comandera"), and is
-derived from the standard Odoo *Dymo* label report because that is the only
-built-in format that already renders a single label per page instead of a
-grid of several labels per sheet, and it already uses the full printable
-width of an 80mm roll.
+It is intended for 80mm-wide thermal ticket printers ("comandera"). Rather
+than one small PDF page per label (how the standard Dymo label works),
+which some thermal printer drivers mishandle when several are printed in
+one job, this format prints every requested label stacked on a single
+continuous page, 7.2cm wide and as tall as needed for however many labels
+are being printed.
 
 The label prints:
 
@@ -38,13 +39,11 @@ restricted to a single company).
 
 .. important::
    This label is generated as a PDF and printed through the browser's print
-   dialog, exactly like the existing Dymo label — it does not go through an
-   IoT Box or send ESC/POS commands. Because of that, **Odoo has no way to
-   trigger an automatic cut after each label**: whether the printer cuts
-   between labels depends entirely on the thermal printer's own driver or
-   on-device configuration (many label printers with a built-in cutter have
-   an "auto-cut" or "cut after each page" setting independent of the
-   application sending the print job). See the Configuration section below.
+   dialog — it does not go through an IoT Box or send ESC/POS commands.
+   Because of that, **Odoo has no way to trigger an automatic cut after
+   each label**: whether the printer cuts at all depends entirely on the
+   thermal printer's own driver or on-device configuration. See the
+   Configuration section below.
 
 .. important::
    **This label does not verify that the price it prints is actually tax
@@ -80,25 +79,25 @@ company as soon as the module is installed.
 Automatic cutting
 ------------------
 
-This label is printed the same way the existing Dymo label is: as a PDF sent
-to the browser's print dialog. Odoo does not talk to the printer directly
-(no IoT Box, no ESC/POS commands), so it cannot issue a "cut" command after
-each label.
+This label is printed as a PDF sent to the browser's print dialog. Odoo
+does not talk to the printer directly (no IoT Box, no ESC/POS commands), so
+it cannot issue a "cut" command after each label.
 
 If the thermal printer has a physical cutter, check whether its own driver
-or on-device settings expose an "auto-cut" / "cut after each page" option
-and enable it there. This is independent of Odoo and must be configured on
-the printer/driver side.
+or on-device settings expose a "cut" option (some receipt-printer Windows
+drivers have a "Feed and Cut" settings tab with a cut-every-N-mm or
+cut-after-page option) and enable it there. This is independent of Odoo and
+must be configured on the printer/driver side.
 
 Usage
 =====
 
 From Point of Sale > Products (or Inventory > Products), select one or more
-products, open Actions > Print Labels, and choose the **National tax price
-(7.2 x 4 cm)** format, then click Print.
+products, open Actions > Print Labels, and choose the **Etiqueta para
+comandera** format, then click Print.
 
-The generated PDF is sized for a 7.2 x 4 cm label on an 80mm-wide thermal
-printer, and shows, per label:
+The generated PDF is one continuous 7.2cm-wide page holding every
+requested label, one after another, and shows, per label:
 
 * Product name (no barcode).
 * "Importe sin impuestos nacionales" and the price with national taxes
