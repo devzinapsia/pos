@@ -41,7 +41,7 @@
                  as .o_label_sheet below: without it, a 3-line product name
                  gets cramped/clipped against this box's own edge instead of
                  spilling past it. -->
-            <t t-set="table_style" t-value="'width:100%;height:44mm;overflow:visible;'"/>
+            <t t-set="table_style" t-value="'width:100%;height:40mm;overflow:visible;'"/>
             <t t-set="padding_page" t-value="'padding: 2mm 2mm 0 2mm'"/>
             <t t-foreach="quantity.items()" t-as="barcode_and_qty_by_product">
                 <t t-set="product" t-value="barcode_and_qty_by_product[0]"/>
@@ -67,8 +67,8 @@
              wraps to 3 lines spills past its row instead of getting
              silently cut off. Bottom padding is 0 (see padding_page above)
              so the cut-guide row below lands exactly at this label's true
-             44mm edge, with nothing printed after it. -->
-        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:44mm;margin:0;overflow:visible;' + padding_page">
+             40mm edge, with nothing printed after it. -->
+        <div class="o_label_sheet o_label_dymo" t-att-style="'width:100%;height:40mm;margin:0;overflow:visible;' + padding_page">
             <div class="o_label_full" t-att-style="table_style">
                 <!-- No barcode: the client's real label doesn't carry one,
                      and the freed vertical space goes to a bigger product
@@ -79,14 +79,14 @@
                      wkhtmltopdf's old WebKit doesn't render it reliably
                      (silently kept everything top-aligned, then
                      overlapping once a 2-line product name was involved).
-                     Sized to 41mm (44mm label - 3mm cut-guide line below),
+                     Sized to 37mm (40mm label - 3mm cut-guide line below),
                      and the cut-guide line is kept OUT of this table: a
                      <td> with nowrap text made wkhtmltopdf's old table
                      layout widen the whole table to fit it on one line,
                      ignoring overflow:hidden on the line's own div - a
                      plain sibling div outside the table doesn't have that
                      quirk. -->
-                <table style="width:100%;height:41mm;border-collapse:collapse;">
+                <table style="width:100%;height:37mm;border-collapse:collapse;">
                     <tr><td style="vertical-align:middle;padding:0;">
                         <div class="o_label_name" t-attf-style="line-height: 110%;background-color: transparent;font-size: {{ get_name_font_size_em(product) }}em;">
                             <span t-if="product.is_product_variant" t-field="product.display_name"/>

@@ -106,17 +106,17 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
 
     def test_paperformat_height_scales_with_label_count(self):
         """The continuous-roll page height must be computed from the actual
-        number of labels being printed in that job (each label's own 44mm,
+        number of labels being printed in that job (each label's own 40mm,
         cut-guide row included, plus a small page margin), not a fixed
         value - regression test for a bug where printing a single label
         used a leftover, much taller page.
         """
         paperformat_one = self.report_action.with_context(pos_label_comandera_count=1).get_paperformat()
         self.assertEqual(paperformat_one.page_width, 72)
-        self.assertEqual(paperformat_one.page_height, 52)  # 1*44 + 2*4 margin
+        self.assertEqual(paperformat_one.page_height, 48)  # 1*40 + 2*4 margin
 
         paperformat_three = self.report_action.with_context(pos_label_comandera_count=3).get_paperformat()
-        self.assertEqual(paperformat_three.page_height, 140)  # 3*44 + 2*4 margin
+        self.assertEqual(paperformat_three.page_height, 128)  # 3*40 + 2*4 margin
 
     def test_name_font_size_steps_down_for_long_names(self):
         short_name_product = self.env["product.product"].create(

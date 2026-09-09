@@ -6,7 +6,7 @@ COMANDERA_REPORT_NAME = "pos_label_national_tax_price.comandera_label"
 # Must match the label height (o_label_sheet, cut-guide row included) baked
 # into report_simple_label_comandera's inline styles in
 # product_label_national_tax_price_templates.xml.
-LABEL_HEIGHT_MM = 44
+LABEL_HEIGHT_MM = 40
 PAGE_MARGIN_MM = 4
 
 
