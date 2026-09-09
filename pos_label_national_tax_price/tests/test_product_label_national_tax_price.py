@@ -117,3 +117,16 @@ class TestProductLabelNationalTaxPrice(TransactionCase):
 
         paperformat_three = self.report_action.with_context(pos_label_comandera_count=3).get_paperformat()
         self.assertEqual(paperformat_three.page_height, 140)  # 3*44 + 2*4 margin
+
+    def test_name_font_size_steps_down_for_long_names(self):
+        short_name_product = self.env["product.product"].create(
+            {"name": "Short Name Product", "list_price": 10.0}
+        )
+        long_name_product = self.env["product.product"].create(
+            {
+                "name": "A Very Long Product Name That Will Not Fit In Two Lines At The Normal Size",
+                "list_price": 10.0,
+            }
+        )
+        self.assertEqual(self.report_model._get_name_font_size_em(short_name_product), 1.3)
+        self.assertEqual(self.report_model._get_name_font_size_em(long_name_product), 1.0)
